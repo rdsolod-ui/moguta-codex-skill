@@ -144,7 +144,7 @@ def validate_skill(skill_dir: Path) -> list[str]:
             errors.append("hook count marker is missing")
 
     for path in skill_dir.rglob("*"):
-        if path.is_dir():
+        if path.is_dir() or "__pycache__" in path.parts:
             continue
         relative = path.relative_to(skill_dir)
         if path.name.lower() == "readme.md":
