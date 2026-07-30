@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented here.
 
+## 1.0.1 - 2026-07-30
+
+- Point the skills.sh badge and repository homepage to the nested skill page.
+
 ## 1.0.0 - 2026-07-30
 
 - Add an installable Codex/Agent Skill for Moguta.CMS development.

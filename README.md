@@ -1,7 +1,7 @@
 # Moguta Codex Skill
 
 [![Validate](https://github.com/rdsolod-ui/moguta-codex-skill/actions/workflows/validate.yml/badge.svg)](https://github.com/rdsolod-ui/moguta-codex-skill/actions/workflows/validate.yml)
-[![skills.sh](https://skills.sh/b/rdsolod-ui/moguta-codex-skill)](https://skills.sh/rdsolod-ui/moguta-codex-skill)
+[![skills.sh](https://skills.sh/b/rdsolod-ui/moguta-codex-skill)](https://skills.sh/rdsolod-ui/moguta-codex-skill/moguta-codex-skill)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
 
 An installable Agent Skill for Codex and other compatible agents that develop,
