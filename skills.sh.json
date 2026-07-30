@@ -1,0 +1,13 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Moguta.CMS Development",
+      "description": "Version-aware Moguta.CMS plugin, template, API, payment, delivery, and engine work.",
+      "skills": [
+        "moguta-codex-skill"
+      ]
+    }
+  ]
+}
