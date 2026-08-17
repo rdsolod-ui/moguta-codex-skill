@@ -100,6 +100,72 @@ Version: 1.0.0
             payload = json.loads(result.stdout)
             self.assertTrue(payload["is_moguta"])
 
+    def test_version_13_1_warns_about_noncomponent_template(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            core = root / "mg-core"
+            core.mkdir()
+            core.joinpath("version.php").write_text(
+                "<?php define('VER', '13.1.1');", encoding="utf-8"
+            )
+            template = root / "mg-templates" / "legacy"
+            (template / "css").mkdir(parents=True)
+            template.joinpath("template.php").write_text("<?php", encoding="utf-8")
+            (template / "css" / "style.css").write_text("body{}", encoding="utf-8")
+
+            report = MODULE.discover(root, 100)
+            codes = {item["code"] for item in report["findings"]}
+            self.assertIn("noncomponent-template-unsupported", codes)
+
+    def test_version_13_warns_about_tcpdf_extension(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            core = root / "mg-core"
+            core.mkdir()
+            core.joinpath("version.php").write_text(
+                "<?php define('VER', '13.0.0');", encoding="utf-8"
+            )
+            plugin = root / "mg-plugins" / "legacy-pdf"
+            plugin.mkdir(parents=True)
+            plugin.joinpath("index.php").write_text(
+                """<?php
+/*
+Plugin Name: Legacy PDF
+Description: Compatibility fixture
+Version: 1.0.0
+*/
+$pdf = new TCPDF();
+""",
+                encoding="utf-8",
+            )
+
+            report = MODULE.discover(root, 100)
+            codes = {item["code"] for item in report["findings"]}
+            self.assertIn("legacy-tcpdf-reference", codes)
+
+    def test_version_gates_do_not_warn_before_their_release(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            core = root / "mg-core"
+            core.mkdir()
+            core.joinpath("version.php").write_text(
+                "<?php define('VER', '12.0.0');", encoding="utf-8"
+            )
+            template = root / "mg-templates" / "legacy"
+            (template / "css").mkdir(parents=True)
+            template.joinpath("template.php").write_text("<?php", encoding="utf-8")
+            (template / "css" / "style.css").write_text("body{}", encoding="utf-8")
+            plugin = root / "mg-plugins" / "legacy-pdf"
+            plugin.mkdir(parents=True)
+            plugin.joinpath("index.php").write_text(
+                "<?php /* Plugin Name: PDF */ new TCPDF();", encoding="utf-8"
+            )
+
+            report = MODULE.discover(root, 100)
+            codes = {item["code"] for item in report["findings"]}
+            self.assertNotIn("noncomponent-template-unsupported", codes)
+            self.assertNotIn("legacy-tcpdf-reference", codes)
+
 
 if __name__ == "__main__":
     unittest.main()

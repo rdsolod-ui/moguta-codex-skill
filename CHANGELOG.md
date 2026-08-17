@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here.
 
+## 1.1.0 - 2026-08-17
+
+- Add an operations and upgrades reference covering the current 13.1.1 audit,
+  PHP/ionCube/MySQL compatibility, backup/restore, deployment, rollback,
+  Docker/Nginx hardening, and license-aware operations.
+- Add version gates for the 13.0 TCPDF-to-mPDF migration and the 13.1 end of
+  support for old non-component templates.
+- Extend the read-only inspector to flag legacy TCPDF use on 13.0+ and
+  non-component templates on 13.1+.
+- Expand validation, tests, discovery metadata, and release documentation for
+  operational and upgrade workflows.
+
 ## 1.0.1 - 2026-07-30
 
 - Point the skills.sh badge and repository homepage to the nested skill page.

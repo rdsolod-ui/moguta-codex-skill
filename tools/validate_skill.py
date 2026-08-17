@@ -99,6 +99,7 @@ def validate_skill(skill_dir: Path) -> list[str]:
         "references/templates.md",
         "references/plugins.md",
         "references/api-and-engine.md",
+        "references/operations-and-upgrades.md",
         "references/documentation-map.md",
         "references/engine-symbol-index.md",
         "scripts/inspect_moguta.py",
@@ -142,6 +143,26 @@ def validate_skill(skill_dir: Path) -> list[str]:
             errors.append("engine symbol count marker is missing")
         if "112 hook names" not in symbols_text:
             errors.append("hook count marker is missing")
+
+    operations_path = skill_dir / "references" / "operations-and-upgrades.md"
+    if operations_path.is_file():
+        operations_text = operations_path.read_text(encoding="utf-8")
+        required_markers = {
+            "13.1.1",
+            "ionCube Loader",
+            "mPDF",
+            "CHMOD 777",
+            "Docker boundary",
+            "License-aware operations",
+        }
+        missing_markers = sorted(
+            marker for marker in required_markers if marker not in operations_text
+        )
+        if missing_markers:
+            errors.append(
+                "operations reference missing audit markers: "
+                + ", ".join(missing_markers)
+            )
 
     for path in skill_dir.rglob("*"):
         if path.is_dir() or "__pycache__" in path.parts:

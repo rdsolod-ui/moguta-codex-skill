@@ -182,9 +182,14 @@ source verification:
 - 10.9.0+: payment methods are documented as plugins;
 - 12.0.0+: the payment guide adds marking, fiscalization, and second-receipt
   behavior;
+- 13.0.0+: PHP 8.4 support is documented and mPDF replaces TCPDF, requiring
+  regression checks for custom print/PDF integrations;
+- 13.1.0+: official support ends for old non-component templates;
 - the external API guide says the API is available in the Hypermarket edition.
 
 Confirm each gate in the installed source and license/edition before using it.
+For hosting, backup, deployment, and migration detail, read
+[operations-and-upgrades.md](operations-and-upgrades.md).
 
 ## Validation matrix
 

@@ -1,6 +1,6 @@
 ---
 name: moguta-codex-skill
-description: Develop, inspect, debug, modernize, and review Moguta.CMS PHP projects, including plugins, templates/themes, hooks, shortcodes, AJAX handlers, API integrations, payment and delivery extensions, MVC overrides, database access, caching, and version compatibility. Use for repositories or tasks mentioning Moguta, Moguta.CMS, mg-core, mg-plugins, mg-templates, mg-pages, Pactioner.php, pageplugin.php, mgAddAction, mgAddShortcode, mgAddMeta, Models_*, Controllers_*, or the Moguta developer API.
+description: Develop, inspect, debug, modernize, operate, upgrade, deploy, and review Moguta.CMS PHP projects, including plugins, templates/themes, hooks, shortcodes, AJAX handlers, API integrations, payment and delivery extensions, MVC overrides, database access, caching, server/runtime compatibility, backups, rollback, Docker/Nginx hardening, and version migrations. Use for repositories or tasks mentioning Moguta, Moguta.CMS, mg-core, mg-plugins, mg-templates, mg-pages, Pactioner.php, pageplugin.php, mgAddAction, mgAddShortcode, mgAddMeta, Models_*, Controllers_*, Moguta API, PHP/ionCube upgrades, or Moguta deployment.
 ---
 
 # Moguta.CMS development
@@ -18,11 +18,11 @@ over the official documentation, not as a substitute for the target source.
    python3 scripts/inspect_moguta.py /path/to/moguta-project
    ```
 
-3. Inspect `git status`, the active template, the target plugin, the `VER`
-   constant or other installed version marker, PHP/runtime constraints, and
-   available tests.
+3. Inspect `git status`, the active/parent template, the target plugin, the
+   `VER` constant or other installed version marker, edition, PHP/ionCube and
+   database constraints, deployment/rollback coordinates, and available tests.
 4. Classify the request as core behavior, plugin, template, page, API,
-   payment, delivery, data migration, or diagnosis.
+   payment, delivery, data migration, deployment, upgrade, or diagnosis.
 5. Search the installed code for the exact class, method, hook, route, and
    calling convention before implementing.
 6. Open only the reference needed for the current task.
@@ -37,6 +37,9 @@ over the official documentation, not as a substitute for the target source.
   components, inheritance, assets, views, layouts, and `config.ini`.
 - Read [api-and-engine.md](references/api-and-engine.md) for external API work,
   engine classes, method lookup, and hooks.
+- Read [operations-and-upgrades.md](references/operations-and-upgrades.md) for
+  hosting, runtime compatibility, backup/restore, Docker/Nginx, deployment,
+  updates, rollback, and major-version migrations.
 - Search [engine-symbol-index.md](references/engine-symbol-index.md) when an
   exact documented function, method, class, or hook must be located.
 - Search [documentation-map.md](references/documentation-map.md) when the task
@@ -71,7 +74,8 @@ Do not infer compatibility from a current-looking wiki example.
 - Preserve old/new branches when the project must support multiple versions.
 - Treat documented milestones as gates: template components and inheritance
   start at 8.15; payment methods become plugins at 10.9.0; the payment guide
-  adds 12.0.0 fiscalization and receipt behavior.
+  adds 12.0.0 fiscalization and receipt behavior; 13.0 replaces TCPDF with
+  mPDF; 13.1 ends support for old non-component templates.
 - Treat spelling, case, callback arguments, return values, and metadata keys as
   source-sensitive. Confirm them in the installed engine or a bundled official
   example.
@@ -92,6 +96,10 @@ Do not infer compatibility from a current-looking wiki example.
   namespaced.
 - Preserve hook results and return the required value for hooks that wrap a
   function result.
+- Before updates or production mutation, require a restorable file/database
+  backup, staging probe, active-release evidence, and explicit rollback path.
+- Treat wiki GET credentials, CHMOD 777, one-line Docker, and minimal Nginx
+  examples as starting points that require production hardening.
 
 ## Validate the change
 
@@ -107,7 +115,9 @@ Run the narrowest complete matrix available:
 7. Cache-disabled and cache-enabled behavior.
 8. API/webhook signature, retry, idempotency, and failure behavior where
    relevant.
-9. A clean diff confirming that `mg-core`, secrets, generated caches, uploads,
+9. Upgrade smoke checks for the active template, custom PDFs, PHP/ionCube,
+   cache, cron, SMTP, imports, and external integrations where relevant.
+10. A clean diff confirming that `mg-core`, secrets, generated caches, uploads,
    and unrelated files were not changed accidentally.
 
 Report the detected version/edition, chosen extension point, files changed,

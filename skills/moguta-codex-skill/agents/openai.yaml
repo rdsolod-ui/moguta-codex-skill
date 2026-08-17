@@ -1,4 +1,4 @@
 interface:
-  display_name: "Moguta.CMS Developer"
-  short_description: "Build and maintain Moguta.CMS extensions"
-  default_prompt: "Use $moguta-codex-skill to inspect this Moguta.CMS project and implement the requested change safely."
+  display_name: "Moguta.CMS Engineering"
+  short_description: "Develop and operate Moguta.CMS safely"
+  default_prompt: "Use $moguta-codex-skill to inspect this Moguta.CMS version and implement or deploy the requested change with safe rollback."

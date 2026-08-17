@@ -42,6 +42,7 @@ DB_QUERY_RE = re.compile(r"\bDB\s*::\s*query\s*\(", re.IGNORECASE)
 DB_QUOTE_RE = re.compile(
     r"\bDB\s*::\s*quote(?:Int|Float|IN)?\s*\(", re.IGNORECASE
 )
+LEGACY_TCPDF_RE = re.compile(r"\bTCPDF\b", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -108,6 +109,19 @@ def detect_version(root: Path, max_files: int) -> tuple[list[dict], list[dict]]:
                 )
                 break
     return version_hits, edition_hits
+
+
+def parse_version(value: str) -> tuple[int, ...] | None:
+    match = re.match(r"^(\d+(?:\.\d+)*)", value)
+    if not match:
+        return None
+    return tuple(int(part) for part in match.group(1).split("."))
+
+
+def newest_version(version_hits: list[dict]) -> tuple[int, ...] | None:
+    parsed = [parse_version(item["value"]) for item in version_hits]
+    versions = [item for item in parsed if item is not None]
+    return max(versions, default=None)
 
 
 def parse_plugin(plugin_dir: Path, root: Path) -> tuple[dict, list[Finding]]:
@@ -248,7 +262,9 @@ def git_core_findings(root: Path) -> list[Finding]:
     ]
 
 
-def scan_extension_php(root: Path, max_files: int) -> list[Finding]:
+def scan_extension_php(
+    root: Path, max_files: int, version: tuple[int, ...] | None
+) -> list[Finding]:
     findings: list[Finding] = []
     extension_roots = [
         root / "mg-plugins",
@@ -270,6 +286,15 @@ def scan_extension_php(root: Path, max_files: int) -> list[Finding]:
                 )
             )
         text = raw.decode("utf-8-sig", errors="replace")
+        if version is not None and version >= (13, 0) and LEGACY_TCPDF_RE.search(text):
+            findings.append(
+                Finding(
+                    "warning",
+                    "legacy-tcpdf-reference",
+                    relative(path, root),
+                    "Moguta.CMS 13.0 replaced TCPDF with mPDF; verify this custom PDF integration.",
+                )
+            )
         for number, line in enumerate(text.splitlines(), start=1):
             if (
                 DB_QUERY_RE.search(line)
@@ -285,6 +310,23 @@ def scan_extension_php(root: Path, max_files: int) -> list[Finding]:
                     )
                 )
     return findings
+
+
+def version_gate_findings(
+    templates: list[dict], version: tuple[int, ...] | None
+) -> list[Finding]:
+    if version is None or version < (13, 1):
+        return []
+    return [
+        Finding(
+            "warning",
+            "noncomponent-template-unsupported",
+            item["folder"],
+            "Moguta.CMS 13.1 ended support for old non-component templates; plan migration to a supported component template.",
+        )
+        for item in templates
+        if not item["has_components"]
+    ]
 
 
 def discover(root: Path, max_files: int) -> dict:
@@ -339,8 +381,10 @@ def discover(root: Path, max_files: int) -> dict:
         findings.extend(item_findings)
 
     versions, editions = detect_version(root, max_files)
+    version = newest_version(versions)
+    findings.extend(version_gate_findings(templates, version))
     findings.extend(git_core_findings(root))
-    findings.extend(scan_extension_php(root, max_files))
+    findings.extend(scan_extension_php(root, max_files, version))
     findings = list(dict.fromkeys(findings))
 
     return {

@@ -9,7 +9,8 @@ inspect, debug, modernize, and review Moguta.CMS projects.
 
 It covers plugins, templates, hooks, shortcodes, AJAX handlers, the external
 API, payment and delivery extensions, MVC overrides, database access, caching,
-and version-aware upgrade safety.
+server/runtime compatibility, backups, rollback, deployment, and version-aware
+upgrade safety.
 
 ## Install
 
@@ -55,8 +56,9 @@ Skill помогает Codex безопасно работать с Moguta.CMS:
 - сначала определяет структуру, версию и редакцию проекта;
 - выбирает расширение через плагин, hook, компонент или view вместо правки
   `mg-core`;
-- знает различия документации 7.2+, 8.15+, 10.9.0+ и 12.0.0;
+- знает различия документации 7.2+, 8.15+, 10.9.0+, 12.0, 13.0 и 13.1;
 - маршрутизирует задачи по шаблонам, плагинам, API, оплате и доставке;
+- проверяет PHP/ionCube/MySQL, backup/restore, Docker/Nginx, deployment и rollback;
 - проверяет SQL, BOM, обязательные файлы и случайные изменения ядра;
 - требует тестировать активацию, обновление, AJAX, webhooks, кеш и ключевые
   торговые сценарии.
@@ -81,6 +83,8 @@ Skill помогает Codex безопасно работать с Moguta.CMS:
 - external Moguta API batching and signature validation
 - payment plugins, webhooks, fiscalization, and receipt behavior
 - delivery calculators, cart recalculation, validation, and order persistence
+- hosting/runtime checks, backup/restore, deployment, rollback, Docker/Nginx
+- 13.0 PDF migration and 13.1 component-template compatibility
 - upgrade-safe validation and release checklists
 
 ## Research coverage
@@ -99,6 +103,9 @@ The 2026-07-30 snapshot covers:
 The skill does not mirror the wiki. It keeps a navigable official link map and
 symbol index, then requires the installed source to resolve version drift.
 See [documentation coverage](docs/documentation-coverage.md).
+
+The 2026-08-17 operational audit adds the current public 13.1.1 line, runtime
+requirements, 12.0-13.1 migration gates, and production hardening guidance.
 
 ## Read-only project inspector
 
@@ -142,6 +149,7 @@ skills/moguta-codex-skill/
 │   ├── core-development.md
 │   ├── documentation-map.md
 │   ├── engine-symbol-index.md
+│   ├── operations-and-upgrades.md
 │   ├── plugins.md
 │   └── templates.md
 └── scripts/

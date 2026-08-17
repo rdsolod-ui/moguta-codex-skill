@@ -6,6 +6,12 @@ The skill was prepared from the official
 [Moguta.CMS developer entry point](https://wiki.moguta.ru/devhelp) on
 2026-07-30 (Europe/Moscow).
 
+A focused operational re-audit on 2026-08-17 re-opened the current user/admin
+and developer entry points plus official pages for system requirements,
+updates, backups, Nginx, Docker, licensing, API, and releases 12.0 through
+13.1. The audit confirmed the public 13.1.1 line and added current migration
+and hardening guidance without mirroring official prose.
+
 The crawl followed every reachable HTML page under:
 
 - `/devhelp` for architecture, task, template, plugin, and API guides;
@@ -48,3 +54,5 @@ Re-run coverage research when:
 - new Moguta.CMS version milestones appear;
 - a symbol/hook lookup fails;
 - the installed engine conflicts with the bundled reference.
+- a new major/minor release changes PHP/ionCube, template, payment, media, or
+  document-generation compatibility.
