@@ -4,7 +4,7 @@
   "groupings": [
     {
       "title": "Moguta.CMS Development",
-      "description": "Version-aware Moguta.CMS plugin, template, API, payment, delivery, and engine work.",
+      "description": "Version-aware Moguta.CMS development, integrations, upgrades, deployment, and operations.",
       "skills": [
         "moguta-codex-skill"
       ]

@@ -153,6 +153,14 @@ authorization, intent, types, identifiers, and error responses.
 
 ## Compatibility and release checks
 
+Moguta.CMS 13.1 release notes end support for old non-component templates.
+Treat a template without `components/` as a migration risk for 13.1+ rather
+than as the default base for new work. Move behavior into supported components,
+inheritance, and extension hooks before depending on future engine updates.
+
+Moguta.CMS 13.0 replaces TCPDF with mPDF. If the template owns invoice, act,
+or other print layouts, compare generated PDFs before and after the upgrade.
+
 Test at least:
 
 - active, parent, and standard fallback resolution;
